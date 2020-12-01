@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RedPackPlugin</string>
+    <string name="accessibility_service_description">启动Wechat抢红包服务</string>
+    <string name="accessibility_service_label">抢红包插件</string>
+</resources>
