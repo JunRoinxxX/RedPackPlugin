@@ -63,6 +63,7 @@ public class RedPackageService extends AccessibilityService {
         Log.d(TAG, "Service进程:: onServiceConnected: ");
     }
 
+    //here contains the main 'logic'
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
