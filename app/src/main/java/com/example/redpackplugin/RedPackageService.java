@@ -178,12 +178,12 @@ public class RedPackageService extends AccessibilityService {
     }
 
     private int findNodeInfosByViewId(AccessibilityNodeInfo rootNode, String viewID) {
-        if (null == rootNode){
+        if (null == rootNode) {
             return -1;
         }
 
         List<AccessibilityNodeInfo> nodeInfoList = rootNode.findAccessibilityNodeInfosByViewId(viewID);
-        for (int i = nodeInfoList.size()-1; i>=0; i--) {
+        for (int i = nodeInfoList.size() - 1; i >= 0; i--) {
             AccessibilityNodeInfo nodeInfo = nodeInfoList.get(i);
             CharSequence className = nodeInfo.getClassName();
             CharSequence text = nodeInfo.getText();
@@ -192,13 +192,13 @@ public class RedPackageService extends AccessibilityService {
             Log.i(TAG, "findNodeInfosByViewId viewID=" + viewID + " className=" + className + " text=" + text + " contentDes=" + contentDes);
 
             //开界面
-            if(VIEW_ID_OPEN.equals(viewID)){
+            if (VIEW_ID_OPEN.equals(viewID)) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 return 1;
                 //微信红包字样
-            } else if(VIEW_ID_WXHB.equals(viewID)){
+            } else if (VIEW_ID_WXHB.equals(viewID)) {
                 List<AccessibilityNodeInfo> recieved = null;
-                if (null != parent){
+                if (null != parent) {
                     recieved = parent.getParent().findAccessibilityNodeInfosByViewId(VIEW_ID_RECIEVED);
                 }
                 //是否已经领过了
@@ -219,8 +219,8 @@ public class RedPackageService extends AccessibilityService {
                 //红包金额
 //            } else if (VIEW_ID_MONEY_AMOUNT.equals(viewID)){
 //                return true;
-            } else if (VIEW_ID_CHET_LIST_WXHB.equals(viewID)){
-                if (text.toString().contains("[微信红包]")){
+            } else if (VIEW_ID_CHET_LIST_WXHB.equals(viewID)) {
+                if (text.toString().contains("[微信红包]")) {
                     //while循环,遍历"领取红包"的各个父布局，直至找到可点击的为止
                     Log.i(TAG, "VIEW_ID_CHET_LIST_WXHB 您有新的红包");
                     while (parent != null) {
@@ -232,14 +232,14 @@ public class RedPackageService extends AccessibilityService {
                         parent = parent.getParent();
                     }
                 }
-            } else if (VIEW_ID_DESCRIPTION.equals(viewID)){
-                if (text.toString().contains("该红包已被领取") || text.toString().contains("红包派完了")){
+            } else if (VIEW_ID_DESCRIPTION.equals(viewID)) {
+                if (text.toString().contains("该红包已被领取") || text.toString().contains("红包派完了")) {
                     performBackClick();
                 }
                 return 4;
             }
         }
-        return  0;
+        return 0;
     }
 
     /**
@@ -269,12 +269,15 @@ public class RedPackageService extends AccessibilityService {
         startActivity(home);
     }
 
-    /** 是否为锁屏或黑屏状态*/
+    /**
+     * 是否为锁屏或黑屏状态
+     */
     public boolean isLockScreen() {
         KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
         return km.inKeyguardRestrictedInputMode() || !isScreenOn();
     }
+
     /**
      * 判断是否处于亮屏状态
      *
@@ -282,7 +285,7 @@ public class RedPackageService extends AccessibilityService {
      */
     public boolean isScreenOn() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             return pm.isInteractive();
         } else {
             return pm.isScreenOn();
