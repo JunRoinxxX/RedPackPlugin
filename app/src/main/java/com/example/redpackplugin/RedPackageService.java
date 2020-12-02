@@ -27,11 +27,11 @@ public class RedPackageService extends AccessibilityService {
     private static final String TAG = "RedPacketService";
 
     //聊天界面“微信红包” TextView ID
-    private String VIEW_ID_WXHB = "android.widget.TextView"; //com.tencent.mm:id/aum
+    private String VIEW_ID_WXHB = "com.tencent.mm:id/r8"; //com.tencent.mm:id/aum
     //聊天界面"已领取" TextView ID
     private String VIEW_ID_RECIEVED = "com.tencent.mm:id/aul";
     //打开红包界面“开” Button ID
-    private String VIEW_ID_OPEN = "com.tencent.mm:id/dan";
+    private String VIEW_ID_OPEN = "com.tencent.mm:id/den";
     //得到的红包金额
     private String VIEW_ID_MONEY_AMOUNT = "com.tencent.mm:id/d62";
     //会话列表界面“微信红包” TextView ID
