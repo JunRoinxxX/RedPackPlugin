@@ -27,7 +27,7 @@ public class RedPackageService extends AccessibilityService {
     private static final String TAG = "RedPacketService";
 
     //聊天界面“微信红包” TextView ID
-    private String VIEW_ID_WXHB = "com.tencent.mm:id/aum";
+    private String VIEW_ID_WXHB = "android.widget.TextView"; //com.tencent.mm:id/aum
     //聊天界面"已领取" TextView ID
     private String VIEW_ID_RECIEVED = "com.tencent.mm:id/aul";
     //打开红包界面“开” Button ID
@@ -105,16 +105,22 @@ public class RedPackageService extends AccessibilityService {
             //窗口内容变化监听
             case AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED:
 
-                //进入开红包界面前会有一个loading界面，之后开界面才刷新出来
-                findNodeInfosByViewId(rootNode, VIEW_ID_OPEN);
+                AccessibilityNodeInfo currentRootNode = getRootInActiveWindow();
+                Log.d(TAG, "发现Event:onAccessibilityEvent: TYPE_WINDOW_CONTENT_CHANGED");
 
-                //会话界面来了个红包，只有内容的刷新
-                findNodeInfosByViewId(rootNode, VIEW_ID_WXHB);
+                Log.d(TAG, "寻找com id：onAccessibilityEvent: " + currentRootNode.findAccessibilityNodeInfosByText("微信红包").getClass().toString());
+                if ("android.widget.FrameLayout".contentEquals(event.getClassName())) {
+                    //进入开红包界面前会有一个loading界面，之后开界面才刷新出来
+                    findNodeInfosByViewId(currentRootNode, VIEW_ID_OPEN);
 
-                //会话列表来了个红包，只有文字内容的刷新
-                findNodeInfosByViewId(rootNode, VIEW_ID_CHET_LIST_WXHB);
+                    //会话界面来了个红包，只有内容的刷新
+                    findNodeInfosByViewId(currentRootNode, VIEW_ID_WXHB);
 
-                findNodeInfosByViewId(rootNode, VIEW_ID_DESCRIPTION);
+                    //会话列表来了个红包，只有文字内容的刷新
+                    findNodeInfosByViewId(currentRootNode, VIEW_ID_CHET_LIST_WXHB);
+
+                    findNodeInfosByViewId(currentRootNode, VIEW_ID_DESCRIPTION);
+                }
 
                 break;
 
@@ -129,7 +135,8 @@ public class RedPackageService extends AccessibilityService {
                     //点微信红包后 开的那个界面
                 } else if (LUCKEY_MONEY_RECEIVER.equals(className)) {
                     //判断是否是显示‘开’的那个红包界面
-                    int findResult = findNodeInfosByViewId(rootNode, VIEW_ID_OPEN);
+                    AccessibilityNodeInfo currentRootNode2 = getRootInActiveWindow();
+                    int findResult = findNodeInfosByViewId(currentRootNode2, VIEW_ID_OPEN);
                     Log.i(TAG, "findNodeInfosByViewId findResult=" + findResult);
                     //在开的界面但却没有找到开按钮，红包被别人抢光了
                     if (0 == findResult) {
@@ -146,38 +153,12 @@ public class RedPackageService extends AccessibilityService {
         }
     }
 
-    @Override
-    public void onInterrupt() {
-        Toast.makeText(this, "我快挂了啊---", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Service进程:: onInterrupt: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Service进程:: onDestroy: ");
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Toast.makeText(this, "抢红包服务关闭", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Service进程:: onUnbind: ");
-        return super.onUnbind(intent);
-    }
 
     /**
-     * 模拟返回操作
+     * @param rootNode
+     * @param viewID
+     * @return
      */
-    public void performBackClick() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG, "performBackClick");
-        performGlobalAction(GLOBAL_ACTION_BACK);
-    }
-
     private int findNodeInfosByViewId(AccessibilityNodeInfo rootNode, String viewID) {
         if (null == rootNode) {
             return -1;
@@ -194,6 +175,7 @@ public class RedPackageService extends AccessibilityService {
 
             //开界面
             if (VIEW_ID_OPEN.equals(viewID)) {
+                Log.i(TAG, "VIEW_ID_WXHB 点击开红包");
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 return 1;
                 //微信红包字样
@@ -241,6 +223,39 @@ public class RedPackageService extends AccessibilityService {
             }
         }
         return 0;
+    }
+
+
+    @Override
+    public void onInterrupt() {
+        Toast.makeText(this, "我快挂了啊---", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Service进程:: onInterrupt: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Service进程:: onDestroy: ");
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Toast.makeText(this, "抢红包服务关闭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Service进程:: onUnbind: ");
+        return super.onUnbind(intent);
+    }
+
+    /**
+     * 模拟返回操作
+     */
+    public void performBackClick() {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "performBackClick");
+        performGlobalAction(GLOBAL_ACTION_BACK);
     }
 
     /**
