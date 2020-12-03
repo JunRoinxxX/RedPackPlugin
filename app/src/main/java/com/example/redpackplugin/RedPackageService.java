@@ -29,15 +29,15 @@ public class RedPackageService extends AccessibilityService {
     //聊天界面“微信红包” TextView ID
     private String VIEW_ID_WXHB = "com.tencent.mm:id/r8"; //com.tencent.mm:id/aum
     //聊天界面"已领取" TextView ID
-    private String VIEW_ID_RECIEVED = "com.tencent.mm:id/aul";//
+    private String VIEW_ID_RECIEVED = "com.tencent.mm:id/r0";
     //打开红包界面“开” Button ID
     private String VIEW_ID_OPEN = "com.tencent.mm:id/den";
     //得到的红包金额
-    private String VIEW_ID_MONEY_AMOUNT = "com.tencent.mm:id/d62";
+    private String VIEW_ID_MONEY_AMOUNT = "com.tencent.mm:id/d_h";
     //会话列表界面“微信红包” TextView ID
-    private String VIEW_ID_CHET_LIST_WXHB = "com.tencent.mm:id/bal";
+    private String VIEW_ID_CHET_LIST_WXHB = "com.tencent.mm:id/cyv";
     //点击红包打开的界面 红包内容描述 TextView ID
-    private String VIEW_ID_DESCRIPTION = "com.tencent.mm:id/dam";
+    private String VIEW_ID_DESCRIPTION = "com.tencent.mm:id/dej";
 
     /**
      * 获取PowerManager.WakeLock对象
@@ -203,7 +203,7 @@ public class RedPackageService extends AccessibilityService {
 //            } else if (VIEW_ID_MONEY_AMOUNT.equals(viewID)){
 //                return true;
             } else if (VIEW_ID_CHET_LIST_WXHB.equals(viewID)) {
-                if (text.toString().contains("[微信红包]")) {
+                if (text.toString().equals("[微信红包]")) {
                     //while循环,遍历"领取红包"的各个父布局，直至找到可点击的为止
                     Log.i(TAG, "VIEW_ID_CHET_LIST_WXHB 您有新的红包");
                     while (parent != null) {
