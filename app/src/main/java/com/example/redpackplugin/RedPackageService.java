@@ -29,7 +29,7 @@ public class RedPackageService extends AccessibilityService {
     //聊天界面“微信红包” TextView ID
     private String VIEW_ID_WXHB = "com.tencent.mm:id/r8"; //com.tencent.mm:id/aum
     //聊天界面"已领取" TextView ID
-    private String VIEW_ID_RECIEVED = "com.tencent.mm:id/aul";
+    private String VIEW_ID_RECIEVED = "com.tencent.mm:id/aul";//
     //打开红包界面“开” Button ID
     private String VIEW_ID_OPEN = "com.tencent.mm:id/den";
     //得到的红包金额
